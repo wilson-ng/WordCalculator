@@ -7,6 +7,10 @@ class NumberToWordConverter
 {
     public static function handle(int $number): String 
     {
+        if (0 === $number) {
+            return 'nol';
+        }
+
         return rtrim(ltrim(self::convert($number)));
     }
 
