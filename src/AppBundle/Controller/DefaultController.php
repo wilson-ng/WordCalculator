@@ -15,6 +15,10 @@ class DefaultController extends Controller
      */
     public function indexAction(Request $request)
     {
+        $minimumCalculateAllowance = 0;
+        $maximumCalculateAllowance = 20;
+
+        $result = '';
         $form = $this->createFormBuilder()
                      ->add('stringCalculation', FormType\TextType::class)
                      ->add('submit', FormType\SubmitType::class)
@@ -30,7 +34,7 @@ class DefaultController extends Controller
             $rightSide = $arrayTobeCalculate[3];
             $operator = $arrayTobeCalculate[2];
 
-            $wordList = array_fill(1, 20, '');
+            $wordList = array_fill(1, $maximumCalculateAllowance, '');
             foreach ($wordList as $key => &$word) {
                 $word = NumberToWordConverter::handle($key); 
             }
@@ -39,15 +43,31 @@ class DefaultController extends Controller
             $leftSide = $this->convertStringToNumberFromList($wordList, $leftSide); 
             $rightSide = $this->convertStringToNumberFromList($wordList, $rightSide); 
 
-            if ($leftSide > 20 || $leftSide < 0 || $rightSide > 20 || $rightSide < 0) {
-                $this->addFlash('notice', 'Nilai valid sisi kiri dan kanan adalah rentang 0 sampai dengan 20.');
+            if ($leftSide > $maximumCalculateAllowance || $leftSide < $minimumCalculateAllowance || $rightSide > $maximumCalculateAllowance || $rightSide < $minimumCalculateAllowance) {
+                $this->addFlash('notice', sprintf('Nilai valid sisi kiri dan kanan adalah rentang %d sampai dengan %d.', $minimumCalculateAllowance, $maximumCalculateAllowance));
                 return $this->redirectToRoute('homepage');
             }
 
+            $calculateResult = 0;
+            if ('tambah' === $operator) {
+                $calculateResult = $leftSide + $rightSide;
+            } elseif ('kurang' === $operator) {
+                $calculateResult = $leftSide - $rightSide;
+            } elseif ('kali' === $operator) {
+                $calculateResult = $leftSide * $rightSide;
+            }
+
+            $result = sprintf(
+                '%s adalah %s%s', 
+                $arrayTobeCalculate[0], 
+                $calculateResult < 0 ? 'minus ' : '', 
+                NumberToWordConverter::handle(abs($calculateResult))
+            );
         }
 
         return $this->render('default/index.html.twig', [
             'form' => $form->createView(),
+            'result' => $result,
         ]);
     }
 
