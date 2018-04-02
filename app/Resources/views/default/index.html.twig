@@ -1,17 +1,38 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <div id="wrapper">
+    <div class="container">
         {% for label, messages in app.flashes %}
             {% for message in messages %}
-                <div class="flash-{{ label }}">
+                <div class="alert alert-{{ label }}">
                     {{ message }}
                 </div>
             {% endfor %}
         {% endfor %}
 
-        {{ form(form) }}
-        {{ result }}
+        <div class="card">
+            <div class="card-header">
+                Example 
+            </div>
+            <div class="card-body">
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item">dua tambah dua</li>
+                    <li class="list-group-item">dua kurang satu </li>
+                    <li class="list-group-item">dua puluh kurang sembilan belas</li>
+                    <li class="list-group-item">nol kurang sembilan</li>
+                    <li class="list-group-item">sebelas kurang satu</li>
+                </ul>
+            </div>
+        </div>
+
+        {{ form_start(form) }}
+        {{ form_end(form) }}
+
+        {% if result != "" %} 
+            <div class="alert alert-success">
+                {{ result }}
+            </div>
+        {% endif %}
     </div>
 {% endblock %}
 

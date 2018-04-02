@@ -44,7 +44,7 @@ class DefaultController extends Controller
             $rightSide = $this->convertStringToNumberFromList($wordList, $rightSide); 
 
             if ($leftSide > $maximumCalculateAllowance || $leftSide < $minimumCalculateAllowance || $rightSide > $maximumCalculateAllowance || $rightSide < $minimumCalculateAllowance) {
-                $this->addFlash('notice', sprintf('Nilai valid sisi kiri dan kanan adalah rentang %d sampai dengan %d.', $minimumCalculateAllowance, $maximumCalculateAllowance));
+                $this->addFlash('danger', sprintf('Nilai valid sisi kiri dan kanan adalah rentang %d sampai dengan %d.', $minimumCalculateAllowance, $maximumCalculateAllowance));
                 return $this->redirectToRoute('homepage');
             }
 
