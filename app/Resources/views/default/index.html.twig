@@ -2,7 +2,16 @@
 
 {% block body %}
     <div id="wrapper">
-        {{ form(form) }} 
+        {% for label, messages in app.flashes %}
+            {% for message in messages %}
+                <div class="flash-{{ label }}">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endfor %}
+
+        {{ form(form) }}
+        {{ result }}
     </div>
 {% endblock %}
 
